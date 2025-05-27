@@ -287,8 +287,39 @@ class TaskManagerGUI:
         due_date_entry.grid(row=3, column=1)
 
         def save_updated_task():
+            name = name_entry.get()
+            description = description_entry.get()
+            priority = priority_drop_down.get().capitalize()
+            due_date = due_date_entry.get()
+
+            if not name:
+                mbox.showerror("Error", "Enter a name. ")
+                return
+            
+            if priority not in priority_choices:
+               mbox.showerror("Error", "Invalid format for priority")
+               return
+            if len(due_date) != 10 or due_date[2] != "/" or due_date[5] != "/":
+               mbox.showerror("Error","Invalid date format")
+               return
+            
+            date, month, year = due_date.split("/")
+            date, month, year = int(date), int(month), int(year)
+
+            if date < 1 or date > 31:
+                mbox.showerror("Error","Date must be between 1 and 31")
+                return
+
+            if month < 1 or month > 12: 
+                mbox.showerror("Error","Month must be between 01 and 12.")
+                return
+            
+            if year < 2000 or year > 2100:
+                mbox.showerror("Error","Year must be between 2000 and 2100.")
+                return
+        
             index = self.tree.index(selected_task)
-            self.task_manager.tasks[index] = Task(name_entry.get(), description_entry.get(), priority_drop_down.get().capitalize(), due_date_entry.get())
+            self.task_manager.tasks[index] = Task(name_entry, description, priority, due_date)
             self.task_manager.save_tasks_to_json()
             self.populate_tree()
             update_task_window.destroy()
