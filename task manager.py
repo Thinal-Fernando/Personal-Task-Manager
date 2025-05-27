@@ -189,30 +189,30 @@ class TaskManagerGUI:
 
         label_name = tk.Label(add_task_window, text="Name:", font=("Times New Roman", 10))
         label_name.grid(row=0, column=0, padx=(20,0))
-        self.name_entry=tk.Entry(add_task_window)
-        self.name_entry.grid(row=0, column=1)
+        name_entry=tk.Entry(add_task_window)
+        name_entry.grid(row=0, column=1)
 
         label_description = tk.Label(add_task_window, text="Description:" , font=("Times New Roman", 10))
         label_description.grid(row=1, column=0, padx=(20,0))
-        self.description_entry=tk.Entry(add_task_window)
-        self.description_entry.grid(row=1, column=1)
+        description_entry=tk.Entry(add_task_window)
+        description_entry.grid(row=1, column=1)
 
         label_priority = tk.Label(add_task_window, text="Priority (Low/Medium/High):", font=("Times New Roman", 10))
         label_priority.grid(row=2, column=0, padx=(20,0))
         priority_choices = ["Low", "Medium", "High"]
-        self.priority_drop_down = ttk.Combobox(add_task_window, values = priority_choices)
-        self.priority_drop_down.grid(row=2, column=1)
+        priority_drop_down = ttk.Combobox(add_task_window, values = priority_choices)
+        priority_drop_down.grid(row=2, column=1)
 
         label_due_date = tk.Label(add_task_window, text="Due Date (DD/MM/YYYY):", font=("Times New Roman", 10))
         label_due_date.grid(row=3, column=0, padx=(20,0))
-        self.due_date_entry=tk.Entry(add_task_window)
-        self.due_date_entry.grid(row=3, column=1)
+        due_date_entry=tk.Entry(add_task_window)
+        due_date_entry.grid(row=3, column=1)
 
         def save_new_task():
-            name=self.name_entry.get()
-            description =self.description_entry.get()
-            priority = self.priority_drop_down.get().capitalize()
-            due_date = self.due_date_entry.get()
+            name = name_entry.get()
+            description = description_entry.get()
+            priority = priority_drop_down.get().capitalize()
+            due_date = due_date_entry.get()
 
             if not name:
                 mbox.showerror("Error", "Enter a name. ")
@@ -263,32 +263,32 @@ class TaskManagerGUI:
 
         label_name = tk.Label(update_task_window, text="Name:", font=("Times New Roman", 10))
         label_name.grid(row=0, column=0, padx=(20,0))
-        self.name_entry=tk.Entry(update_task_window)
-        self.name_entry.insert(0, values[0])
-        self.name_entry.grid(row=0, column=1)
+        name_entry=tk.Entry(update_task_window)
+        name_entry.insert(0, values[0])
+        name_entry.grid(row=0, column=1)
 
         label_description = tk.Label(update_task_window, text="Description:" , font=("Times New Roman", 10))
         label_description.grid(row=1, column=0, padx=(20,0))
-        self.description_entry=tk.Entry(update_task_window)
-        self.description_entry.insert(0, values[1])
-        self.description_entry.grid(row=1, column=1)
+        description_entry=tk.Entry(update_task_window)
+        description_entry.insert(0, values[1])
+        description_entry.grid(row=1, column=1)
 
         label_priority = tk.Label(update_task_window, text="Priority (Low/Medium/High):", font=("Times New Roman", 10))
         label_priority.grid(row=2, column=0, padx=(20,0))
         priority_choices = ["Low", "Medium", "High"]
-        self.priority_drop_down = ttk.Combobox(update_task_window, values = priority_choices)
-        self.priority_drop_down.insert(0, values[2])
-        self.priority_drop_down.grid(row=2, column=1)
+        priority_drop_down = ttk.Combobox(update_task_window, values = priority_choices)
+        priority_drop_down.insert(0, values[2])
+        priority_drop_down.grid(row=2, column=1)
 
         label_due_date = tk.Label(update_task_window, text="Due Date (DD/MM/YYYY):", font=("Times New Roman", 10))
         label_due_date.grid(row=3, column=0, padx=(20,0))
-        self.due_date_entry=tk.Entry(update_task_window)
-        self.due_date_entry.insert(0, values[3])
-        self.due_date_entry.grid(row=3, column=1)
+        due_date_entry=tk.Entry(update_task_window)
+        due_date_entry.insert(0, values[3])
+        due_date_entry.grid(row=3, column=1)
 
         def save_updated_task():
             index = self.tree.index(selected_task)
-            self.task_manager.tasks[index] = Task(name_entry.get(), description_entry.get(), priority_entry.get().capitalize(), due_date_entry.get())
+            self.task_manager.tasks[index] = Task(name_entry.get(), description_entry.get(), priority_drop_down.get().capitalize(), due_date_entry.get())
             self.task_manager.save_tasks_to_json()
             self.populate_tree()
             update_task_window.destroy()
