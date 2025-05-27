@@ -258,7 +258,7 @@ class TaskManagerGUI:
         values=self.tree.item(selected_task,"values")
 
         update_task_window=tk.Toplevel(self.root)
-        update_task_window.title("Add New Task")
+        update_task_window.title("Update New Task")
         update_task_window.geometry("300x200")
 
         label_name = tk.Label(update_task_window, text="Name:", font=("Times New Roman", 10))
@@ -300,7 +300,7 @@ class TaskManagerGUI:
     def delete_task(self):
         selected_task = self.tree.focus()
         if not selected_task:
-            messagebox.showwarning("Warning", "No task selected!")
+            mbox.showwarning("Warning", "No task selected!")
             return
 
         confirm = mbox.askyesno("Confirm Delete", "Are you sure you want to delete the selected task?")
