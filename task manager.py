@@ -2,6 +2,7 @@ import json
 import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as mbox
+from datetime import datetime
 
 
 class Task:
@@ -45,8 +46,8 @@ class TaskManager:
         try:
             with open(self.json_file,"w") as file:
                 json.dump([task.to_dict() for task in self.tasks], file, indent = 2)
-        except IOError:
-            print("Error!Couldnt find file.")
+        except IOError as e:
+            print("Error!Couldnt find file: {e}")
         
         
 
@@ -88,9 +89,9 @@ class TaskManager:
 
         elif sort_key == "due_date":
             if self.ascending:
-                self.tasks.sort(key=lambda task: task.due_date)
+                self.tasks.sort(key=lambda task: datetime.strptime(task.due_date, "%d/%m/%Y"))
             else:
-                self.tasks.sort(key=lambda task: task.due_date,reverse=True)
+                self.tasks.sort(key=lambda task: datetime.strptime(task.due_date, "%d/%m/%Y"),reverse=True)
         return self.tasks
             
         
@@ -220,25 +221,14 @@ class TaskManagerGUI:
             if priority not in priority_choices:
                 mbox.showerror("Error", "Invalid format for priority")
                 return
-            if len(due_date) != 10 or due_date[2] != "/" or due_date[5] != "/":
-                mbox.showerror("Error","Invalid date format")
+            try:
+                formated_date = datetime.strptime(due_date, "%d/%m/%Y")
+            except ValueError:
+                mbox.showerror("Error", "Invalid date format. Use DD/MM/YYYY.")
                 return
-            
-            date, month, year = due_date.split("/")
-            date, month, year = int(date), int(month), int(year)
-
-
-            if date <1 or date >31:
-                mbox.showerror("Error","Date must be between 1 and 31")
-                return
-
-            if month <1 or month >12: 
-                mbox.showerror("Error","Month must be between 01 and 12.")
-                return
-            
-            if year <2000 or year > 2100:
-                mbox.showerror("Error","Year must be between 2000 and 2100.")
-                return
+            if formated_date.year <2000 or formated_date.year > 2100:
+                mbox.showerror("Error", "Year must be between 2000 and 2100.")
+                return                
             
             self.task_manager.tasks.append(Task(name, description, priority, due_date))
             self.task_manager.save_tasks_to_json()
@@ -299,27 +289,18 @@ class TaskManagerGUI:
             if priority not in priority_choices:
                mbox.showerror("Error", "Invalid format for priority")
                return
-            if len(due_date) != 10 or due_date[2] != "/" or due_date[5] != "/":
-               mbox.showerror("Error","Invalid date format")
-               return
-            
-            date, month, year = due_date.split("/")
-            date, month, year = int(date), int(month), int(year)
-
-            if date < 1 or date > 31:
-                mbox.showerror("Error","Date must be between 1 and 31")
+    
+            try:
+                formated_date = datetime.strptime(due_date, "%d/%m/%Y")
+            except ValueError:
+                mbox.showerror("Error", "Invalid date format. Use DD/MM/YYYY.")
                 return
-
-            if month < 1 or month > 12: 
-                mbox.showerror("Error","Month must be between 01 and 12.")
-                return
-            
-            if year < 2000 or year > 2100:
-                mbox.showerror("Error","Year must be between 2000 and 2100.")
+            if formated_date.year <2000 or formated_date.year > 2100:
+                mbox.showerror("Error", "Year must be between 2000 and 2100.")
                 return
         
             index = self.tree.index(selected_task)
-            self.task_manager.tasks[index] = Task(name_entry, description, priority, due_date)
+            self.task_manager.tasks[index] = Task(name, description, priority, due_date)
             self.task_manager.save_tasks_to_json()
             self.populate_tree()
             update_task_window.destroy()
