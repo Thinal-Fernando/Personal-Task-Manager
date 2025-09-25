@@ -1,4 +1,4 @@
-## 📝 Personal Task Manager 
+# 📝 Personal Task Manager 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
 ![Tkinter](https://img.shields.io/badge/Tkinter-GUI-orange)
 ![OOP](https://img.shields.io/badge/OOP-Classes-green)
